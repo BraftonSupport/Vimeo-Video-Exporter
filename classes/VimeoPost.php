@@ -25,7 +25,7 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $obj);                                                                                                        
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer 3dcd1068806e597d1cbce38dd50106c7',                                                                       
+				'Authorization: Bearer TOKEN',                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
@@ -47,13 +47,43 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $obj);                                                                                                        
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer 3dcd1068806e597d1cbce38dd50106c7',                                                                       
+				'Authorization: Bearer TOKEN',                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
 		);
 		curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, true);     
 		$result = curl_exec($crl);
+	}
+	/**
+     * Retrieve list of user's videos and search for brafton id in tag list
+     * @return $test boolean 
+     **/
+	public function checkVideos(){
+		$crl = curl_init();
+		curl_setopt($crl, CURLOPT_URL, $this->buildPostUrl());
+		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "GET");
+		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
+				'Authorization: Bearer TOKEN',                                                                       
+			    'Content-Type: application/json',
+			    'Accept: application/vnd.vimeo.*+json;version=3.4'
+			)                                                                                                                                
+		);
+		curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, true);     
+		$result = curl_exec($crl);
+		$fixed = json_decode($result);
+		$videos = $fixed->data;
+		$test = false;
+		foreach ($videos as $video) {
+			foreach($video->tags as $tag){
+				if($tag->name == $this->braftonId) {
+					$test = true;
+					continue;
+				}
+			}
+		}
+		return $test;
 	}
 
 	/**
