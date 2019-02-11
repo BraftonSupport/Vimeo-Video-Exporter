@@ -10,7 +10,6 @@ class BraftonClient {
 
     }
 
-
     public function getBraftonVideos() {
 
         $domain = preg_replace('/https:\/\//','',"api.brafton.com");
