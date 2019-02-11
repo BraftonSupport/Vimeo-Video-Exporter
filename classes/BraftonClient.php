@@ -3,8 +3,8 @@
 class BraftonClient {
 
     public $d = "api.brafton.com";
-    public $pb = "XXX";
-    public $pv = "XXXXXXXXXXXXXXX";
+    public $pb = "-----------";
+    public $pv = "---------------------";
 
     public function __construct(){
 
