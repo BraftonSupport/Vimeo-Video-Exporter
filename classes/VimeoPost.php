@@ -22,7 +22,7 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $obj);                                                                                                        
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer TOKEN',                                                                       
+				'Authorization: Bearer 89021300e676297f761e81e11349ef6a',                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                

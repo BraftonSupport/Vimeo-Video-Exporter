@@ -3,8 +3,8 @@
 class BraftonClient {
 
     public $d = "api.brafton.com";
-    public $pb = "-----------"; //Brafton public key
-    public $pv = "---------------------"; //Brafton private key
+    public $pb = "SR1Y0OC4"; //Brafton public key
+    public $pv = "57ead238-3fb9-4678-995a-f27ec23dae89"; //Brafton private key
 
     public function __construct(){
 

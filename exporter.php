@@ -11,7 +11,16 @@ $brafton = new BraftonClient();
 $list = $brafton->getBraftonVideos();
 $vimeo = new VimeoPost('https://api.vimeo.com/users/92409741');
 $group = $vimeo->checkVideos();
+$braftonIds = array();
 foreach($group as $video){
-    echo '<br />'.$video->tags[0]->name;
+    if(sizeOf($video->tags)>0){
+        //echo '<br />'.$video->tags[0]->name;
+        array_push($braftonIds,$video->tags[0]->name);
+    }    
 }
-var_dump($group);
+var_dump($list[0]->id);
+foreach($list as $item){
+    if(in_array($item->id,$braftonIds)){
+        echo 'video '.$item->id.' already exists';
+    }
+}
