@@ -1,14 +1,11 @@
 <?php
 
-namespace Brafton\Vimeo;
-
 class VimeoPost {
 	public $videoPath;
 	public $braftonId;
 	public $userUri;
 
-	public function __construct($id,$uri){
-		$this->braftonId = $id;
+	public function __construct($uri){
 		$this->userUri = $uri;
 	}
 
@@ -18,36 +15,36 @@ class VimeoPost {
      * @param json $obj video data to be posted
      * 
      **/
-	public function postVideo($obj){
+	public function postVideo($obj,$id){
 		$crl = curl_init();
 		curl_setopt($crl, CURLOPT_URL, $this->buildPostUrl());
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "POST");
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $obj);                                                                                                        
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer TOKEN',                                                                       
+				'Authorization: Bearer 89021300e676297f761e81e11349ef6a',                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
 		);
 		curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, true);     
 		$result = curl_exec($crl);
-		$this->videoPath = $result->uri;
-		$this->addTag();
+		$decoded = json_decode($result);
+		$this->videoPath = $decoded->uri;
+		$this->addTag($id);
 	}
 
 	/**
      * Add brafton id as a tag to newly created Vimeo video
      * 
      **/
-	public function addTag(){
+	public function addTag($id){
 		$crl = curl_init();
-		curl_setopt($crl, CURLOPT_URL, $this->buildTagUrl() );
-		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "PUT");
-		curl_setopt($crl, CURLOPT_POSTFIELDS, $obj);                                                                                                        
+		curl_setopt($crl, CURLOPT_URL, $this->buildTagUrl($id) );
+		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "PUT");                                                                                                       
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer TOKEN',                                                                       
+				'Authorization: Bearer -----------------------',                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
@@ -65,7 +62,7 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "GET");
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer TOKEN',                                                                       
+				'Authorization: Bearer ---------------------------',                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
@@ -74,7 +71,7 @@ class VimeoPost {
 		$result = curl_exec($crl);
 		$fixed = json_decode($result);
 		$videos = $fixed->data;
-		$test = false;
+		/*$test = false;
 		foreach ($videos as $video) {
 			foreach($video->tags as $tag){
 				if($tag->name == $this->braftonId) {
@@ -82,8 +79,8 @@ class VimeoPost {
 					continue;
 				}
 			}
-		}
-		return $test;
+		}*/
+		return $videos;
 	}
 
 	/**
@@ -102,8 +99,9 @@ class VimeoPost {
      * @param string $userId users account id 
      * @return string /videos/{video-id}/tags/{string}
      **/
-	public function buildTagUrl($path,$braftonId){
-		return $this->videoPath.'/tags/'.$this->braftonId;
+	public function buildTagUrl($id){
+		echo $this->videoPath.'/tags/'.$id;
+		return 'https://api.vimeo.com'.$this->videoPath.'/tags/'.$id;
 	}
 
 }
