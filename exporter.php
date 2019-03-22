@@ -6,9 +6,11 @@ require_once 'RCClientLibrary/AdferoPhotos/AdferoPhotoClient.php';
 
 include './classes/BraftonClient.php';
 include './classes/VimeoPost.php';
+include './classes/VimeoOptions.php';
 
-$brafton = new BraftonClient();
+$brafton = new BraftonClient(OVERRIDE,VIEW,EMBED,ADD);//todo: determine how to implement this from external file of user-defined options.
 $list = $brafton->getBraftonVideos();
+$pushOptions = new VimeoOptions();
 
 $vimeo = new VimeoPost('https://api.vimeo.com/users/92409741');
 $group = $vimeo->checkVideos();
