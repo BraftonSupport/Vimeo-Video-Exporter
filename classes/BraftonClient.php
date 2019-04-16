@@ -1,4 +1,5 @@
 <?php 
+declare(strict_types=1);
 
 class BraftonClient {
 
@@ -11,20 +12,19 @@ class BraftonClient {
 
     }
 
-    public function getBraftonVideos() {
+    /**
+     * @return $videos array of brafton ids from live XML feed
+     */
+    public function getBraftonVideos(): array {
 
         $domain = preg_replace('/https:\/\//','',"api.brafton.com");
-        //echo '<br />'.$domain;
-        $baseURL = 'http://livevideo.'.str_replace('http://', '',$domain).'/v2/';
-        //echo '<br />'.$baseURL;        
-        $client = new AdferoClient($baseURL, $this->pb, $this->pv);
-        
+        $baseURL = 'http://livevideo.'.str_replace('http://', '',$domain).'/v2/';      
+        $client = new AdferoClient($baseURL, $this->pb, $this->pv);        
         $photos = $client->ArticlePhotos();
         $photoURI = 'http://'.str_replace('api', 'pictures',$domain).'/v2/';
         $photoClient = new AdferoPhotoClient($photoURI);
         $feeds = $client->Feeds();
         $feedList = $feeds->ListFeeds(0,10);
-
         $articleClient=$client->Articles();
 
         //CHANGE FEED NUM HERE
@@ -35,7 +35,6 @@ class BraftonClient {
         foreach($articles->items as $item){
 
             $article = $client->Articles()->Get($item->id);
-            //$this->videos[$item->id] = $article->fields['title'];
             array_push($this->videos,array(
                         'brafton-id'=>$item->id,
                         'title'=>$article->fields['title']
@@ -43,6 +42,10 @@ class BraftonClient {
         }
         return $this->videos;
     }
+    /**
+     * @param $brafton_id string
+     * @return $path string,  url of video hosted on brafton server
+     */
     public function getVideoSource($brafton_id){
         $domain = preg_replace('/https:\/\//','',"api.brafton.com");
         $baseURL = 'http://livevideo.'.str_replace('http://', '',$domain).'/v2/';

@@ -1,16 +1,21 @@
 <?php 
+declare(strict_types=1);
 
 require_once 'RCClientLibrary/AdferoArticlesVideoExtensions/AdferoVideoClient.php';
 require_once 'RCClientLibrary/AdferoArticles/AdferoClient.php';
 require_once 'RCClientLibrary/AdferoPhotos/AdferoPhotoClient.php';
 
-include './classes/BraftonClient.php';
-include './classes/VimeoPost.php';
+spl_autoload_register(function ($class_name) {
+    include 'classes/'.$class_name .'.php';
+});
+
+define('VIMEO_TOKEN','XXXXXXX');
 
 $brafton = new BraftonClient();
 $list = $brafton->getBraftonVideos();
+$pushOptions = new VimeoOptions();
 
-$vimeo = new VimeoPost('https://api.vimeo.com/users/92409741');
+$vimeo = new VimeoPost('https://api.vimeo.com/users/92409741',VIMEO_TOKEN);
 $group = $vimeo->checkVideos();
 $braftonIds = array();
 foreach($group as $video){
@@ -24,7 +29,6 @@ foreach($list as $a){
     if(in_array($a['brafton-id'],$braftonIds)){
         echo 'video '.$a['brafton-id'].' already exists';
     } else{
-        //echo '<br />'.$a['brafton-id']. $a['title'].$brafton->getVideoSource($a['brafton-id']);
         $obj = array(
             "upload"=> array(
                 "approach"=>"pull",
