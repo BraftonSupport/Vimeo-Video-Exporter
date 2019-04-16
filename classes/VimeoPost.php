@@ -1,12 +1,24 @@
 <?php
+declare(strict_types=1);
 
 class VimeoPost {
 	public $videoPath;
 	public $braftonId;
 	public $userUri;
+	private $token;
 
-	public function __construct($uri){
+	public function __construct($uri,$token){
 		$this->userUri = $uri;
+		$this->token = $token;
+
+	}
+
+	/**
+	 * @return string $token Vimeo authentication token
+	 * 
+	 */
+	private function getToken() : string{
+		return $this->token;
 	}
 
 	/**
@@ -22,7 +34,7 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_POSTFIELDS, $obj);                                                                                                        
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer ----------------',                                                                       
+				'Authorization: Bearer '.$this->getToken(),                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
@@ -36,7 +48,7 @@ class VimeoPost {
 
 	/**
      * Add brafton id as a tag to newly created Vimeo video
-     * 
+     * @param $id string
      **/
 	public function addTag($id){
 		$crl = curl_init();
@@ -44,7 +56,7 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "PUT");                                                                                                       
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer -----------------------',                                                                       
+				'Authorization: Bearer '.$this->getToken(),                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
@@ -62,7 +74,7 @@ class VimeoPost {
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "GET");
 		curl_setopt($crl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($crl, CURLOPT_HTTPHEADER, array(  
-				'Authorization: Bearer ---------------------------',                                                                       
+				'Authorization: Bearer '.$this->getToken(),                                                                       
 			    'Content-Type: application/json',
 			    'Accept: application/vnd.vimeo.*+json;version=3.4'
 			)                                                                                                                                
@@ -71,15 +83,6 @@ class VimeoPost {
 		$result = curl_exec($crl);
 		$fixed = json_decode($result);
 		$videos = $fixed->data;
-		/*$test = false;
-		foreach ($videos as $video) {
-			foreach($video->tags as $tag){
-				if($tag->name == $this->braftonId) {
-					$test = true;
-					continue;
-				}
-			}
-		}*/
 		return $videos;
 	}
 
