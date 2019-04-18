@@ -68,7 +68,7 @@ class VimeoPost {
      * Retrieve list of user's videos and search for brafton id in tag list
      * @return $test boolean 
      **/
-	public function checkVideos(){
+	public function checkVideos() : boolean {
 		$crl = curl_init();
 		curl_setopt($crl, CURLOPT_URL, $this->buildPostUrl());
 		curl_setopt($crl, CURLOPT_CUSTOMREQUEST, "GET");
@@ -92,7 +92,7 @@ class VimeoPost {
      * @param string $link users home url /users/xxxxxx/
      * @return string /users/xxxxxx/videos
      **/
-	public function buildPostUrl(){
+	public function buildPostUrl() : string{
 		return $this->userUri.'/videos';
 	}
 
@@ -102,7 +102,7 @@ class VimeoPost {
      * @param string $userId users account id 
      * @return string /videos/{video-id}/tags/{string}
      **/
-	public function buildTagUrl($id){
+	public function buildTagUrl($id) : string {
 		echo $this->videoPath.'/tags/'.$id;
 		return 'https://api.vimeo.com'.$this->videoPath.'/tags/'.$id;
 	}

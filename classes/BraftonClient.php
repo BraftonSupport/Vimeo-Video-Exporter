@@ -1,6 +1,8 @@
 <?php 
 declare(strict_types=1);
 
+namespace BraftonVimeo;
+
 class BraftonClient {
 
     public $d = "api.brafton.com";
@@ -62,6 +64,9 @@ class BraftonClient {
         }
         return $path;
     }
+    /**
+     * function not in use
+     */
     public function getVideoTitle($client){
         
         var_dump($client);
