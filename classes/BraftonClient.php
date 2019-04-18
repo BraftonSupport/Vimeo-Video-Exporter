@@ -4,8 +4,8 @@ declare(strict_types=1);
 class BraftonClient {
 
     public $d = "api.brafton.com";
-    public $pb = "9UREC71R"; //Brafton public key
-    public $pv = "3a66f24b-5306-46b1-ba74-bd21700e573c"; //Brafton private key
+    public $pb = "XXXX"; //Brafton public key
+    public $pv = "XXXXXXXXXXX"; //Brafton private key
     public $videos  = array();
 
     public function __construct(){
