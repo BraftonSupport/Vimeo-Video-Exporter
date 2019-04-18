@@ -11,7 +11,7 @@ spl_autoload_register(function ($class_name) {
 
 define('VIMEO_TOKEN','XXXXXXX');
 
-$brafton = new BraftonClient();
+$brafton = new \BraftonVimeo\BraftonClient();
 $list = $brafton->getBraftonVideos();
 $pushOptions = new VimeoOptions();
 
