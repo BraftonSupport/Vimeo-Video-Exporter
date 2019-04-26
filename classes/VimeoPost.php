@@ -10,7 +10,6 @@ class VimeoPost {
 	public function __construct($uri,$token){
 		$this->userUri = $uri;
 		$this->token = $token;
-
 	}
 
 	/**
@@ -65,8 +64,8 @@ class VimeoPost {
 		$result = curl_exec($crl);
 	}
 	/**
-     * Retrieve list of user's videos and search for brafton id in tag list
-     * @return $test boolean 
+     * Retrieve list of user's videos 
+     * @return $videos array of Vimeo video objects (a lot of data)
      **/
 	public function checkVideos() : boolean {
 		$crl = curl_init();
@@ -83,6 +82,9 @@ class VimeoPost {
 		$result = curl_exec($crl);
 		$fixed = json_decode($result);
 		$videos = $fixed->data;
+		echo '<pre>';
+		var_dump($videos);
+		die();
 		return $videos;
 	}
 
