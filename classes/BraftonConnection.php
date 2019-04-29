@@ -20,17 +20,6 @@ class BraftonConnection {
             die("Connection failed: " . $this->connection->connect_error);
         }
      }
-
-    /**
-     * make initial connection to AWS db (replace with singleton)
-     */
-    public static function dbConnect($server,$user,$passcode){
-        $conn = new mysqli($server, $user,$passcode, 'vimeo');
-        if ($conn->connect_error) {
-            die("Connection failed: " . $conn->connect_error);
-        }
-        return $conn;
-    }
     /**
      * create new instance of class if it does not already exist
      * @return BraftonConnection object
