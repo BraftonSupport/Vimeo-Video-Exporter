@@ -21,10 +21,10 @@ class BraftonClient {
 
         $domain = preg_replace('/https:\/\//','',"api.brafton.com");
         $baseURL = 'http://livevideo.'.str_replace('http://', '',$domain).'/v2/';      
-        $client = new AdferoClient($baseURL, $this->pb, $this->pv);        
+        $client = new \AdferoClient($baseURL, $this->pb, $this->pv);        
         $photos = $client->ArticlePhotos();
         $photoURI = 'http://'.str_replace('api', 'pictures',$domain).'/v2/';
-        $photoClient = new AdferoPhotoClient($photoURI);
+        $photoClient = new \AdferoPhotoClient($photoURI);
         $feeds = $client->Feeds();
         $feedList = $feeds->ListFeeds(0,10);
         $articleClient=$client->Articles();
@@ -51,7 +51,7 @@ class BraftonClient {
     public function getVideoSource($brafton_id){
         $domain = preg_replace('/https:\/\//','',"api.brafton.com");
         $baseURL = 'http://livevideo.'.str_replace('http://', '',$domain).'/v2/';
-        $videoClient = new AdferoVideoClient($baseURL, $this->pb, $this->pv);
+        $videoClient = new \AdferoVideoClient($baseURL, $this->pb, $this->pv);
         $videoOutClient = $videoClient->videoOutputs();
         $videoList=$videoOutClient->ListForArticle($brafton_id,0,10);
         $list=$videoList->items;
