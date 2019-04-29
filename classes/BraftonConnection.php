@@ -7,7 +7,19 @@ class BraftonConnection {
     public static $servername;
     private static $username;
     private static $passcode;
-    public $connected;
+    private static $creation = null;
+    public $connection;
+
+
+    /**
+     * private constructor to ensure only 1 instance of class is created
+     */
+     private function __construct($server, $user,$passcode, $db){
+        $this->connection = new mysqli($server, $user,$passcode, $db);
+        if ($this->connection->connect_error) {
+            die("Connection failed: " . $this->connection->connect_error);
+        }
+     }
 
     /**
      * make initial connection to AWS db (replace with singleton)
@@ -20,6 +32,24 @@ class BraftonConnection {
         return $conn;
     }
     /**
+     * create new instance of class if it does not already exist
+     * @return BraftonConnection object
+     */
+    public static function getCreation($server, $user,$passcode, $db){
+        if(!self::$creation) {
+            self::$creation = new BraftonConnection($server, $user,$passcode, $db);
+        }
+        return self::$creation;
+    }
+
+    /**
+     * get actual connection
+     * @return mysql connection object
+     */
+    public function getConnection(){
+        return $this->connection;
+    }
+    /**
      * return single user data from AWS db
      */
     public static function getClientData($connection,$name){
@@ -29,9 +59,9 @@ class BraftonConnection {
             $arguments = [];
             if($result->num_rows>0){
                 while ($row = $result->fetch_row()) {
-                    $arguments['token'] = $row[6];
-                    $arguments['link'] = $row[7];
-                    $arguments['privacy'] = $row[8];
+                    $arguments['token'] = $row[5];
+                    $arguments['link'] = $row[6];
+                    $arguments['privacy'] = $row[7];
                 }
             }
             return $arguments;

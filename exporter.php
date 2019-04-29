@@ -12,8 +12,11 @@ spl_autoload_register(function ($class_name) {
 $creds = file_get_contents('creds.json');
 $creds = json_decode($creds);
 //set up connection to AWS db
-$connection = BraftonConnection::dbconnect($creds->server,$creds->user,$creds->code);
+$braftondb = BraftonConnection::getCreation($creds->server,$creds->user,$creds->code,'vimeo');
+$connection = $braftondb->getConnection();
 $user_data = BraftonConnection::getClientData($connection,'James Allan');
+var_dump($user_data);
+die();
 define('VIMEO_LINK',user_data['link']);
 define('VIMEO_TOKEN',user_data['token']);
 define('VIMEO_PRIVACY',user_data['privacy']);
